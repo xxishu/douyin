@@ -1,0 +1,41 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: hmdp
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    url: jdbc:mysql://47.96.141.117:3306/hmdp?useSSL=true&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://47.96.141.117:3306/douyin?useSSL=false&characterEncoding=utf8
+    username: root
+    password: SunHao210012!
+    hikari:
+      minimum-idle: 5
+      #连接池中允许的最大连接数。缺省值：10
+      maximum-pool-size: 20
+      auto-commit: true
+      #一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟
+      idle-timeout: 15000
+#      pool-name: DatebookHikariCP
+      # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
+      connection-timeout: 10000
+  redis:
+    host: 47.96.141.117
+    port: 6379
+    password: SunHao210012!
+    database: 1
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 1
+        time-between-eviction-runs: 5s
+  jackson:
+    default-property-inclusion: non_null # JSON处理时忽略非空字段
+mybatis:
+  type-aliases-package: com.sss.douyin.domain
+logging:
+  level:
+    com: debug
+#  pattern:
+#    dateformat: mm:ss.SSS
