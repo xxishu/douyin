@@ -1,7 +1,10 @@
 package com.sss.douyin.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.StrUtil;
 import com.sss.douyin.domain.User;
+import com.sss.douyin.domain.UserDTO;
 import com.sss.douyin.mapper.UserMapper;
 import com.sss.douyin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +39,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer login(String username, String password) {
-        return null;
+    public User getUser(Integer userId) {
+        User user = userMapper.findUserById(userId);
+        if(user == null) return null;
+        //TODO 找到粉丝和关注的人的列表
+        return user;
     }
 
+
+    @Override
+    public UserDTO login(String username, String password) {
+        Integer userId = this.findUser(username, password);
+        if(userId == null) return null;
+        User user = this.getUser(userId);
+        UserDTO userDTO = this.user2UserDTO(user);
+        return userDTO;
+    }
+
+    public UserDTO user2UserDTO(User user){
+        if(user == null) return null;
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setName(user.getUsername());
+        if(user.getFollow() == null) {
+            userDTO.setFollowCount(0);
+        } else {
+            userDTO.setFollowCount(user.getFollow().size());
+        }
+        if(user.getFollower() == null) {
+            userDTO.setFollowerCount(0);
+        } else {
+            userDTO.setFollowerCount(user.getFollower().size());
+        }
+        return userDTO;
+    }
 
 }

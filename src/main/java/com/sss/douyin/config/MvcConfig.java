@@ -41,7 +41,8 @@ public class MvcConfig implements WebMvcConfigurer {
                     @Override
                     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
                         try {
-                            String token = (String) request.getAttribute("token");
+//                             request.getAttribute("token");
+                            String token = (String)request.getParameter("token");
 //                        String userJson = (String) redisTemplate.opsForValue().get("login:token:" + token);
                             String userJson = tokenHolder.getUser(token);
                             if(token != null && userJson != null){

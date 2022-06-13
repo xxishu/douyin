@@ -13,12 +13,12 @@ public class TokenHolder {
     StringRedisTemplate stringRedisTemplate;
 
     private static ConcurrentHashMap<String, String> tokenUserMap = new ConcurrentHashMap<>();
-    public static String getUser(String token){
+    public String getUser(String token){
         if(token == null) return null;
         return tokenUserMap.get(token);
 
     }
-    public static void setUser(String user, String token){
+    public void setUser(String user, String token){
         tokenUserMap.put(token, user);
     }
 }

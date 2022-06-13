@@ -7,6 +7,7 @@ import com.sss.douyin.result.RegisterResult;
 import com.sss.douyin.domain.UserDTO;
 import com.sss.douyin.result.UserinfoResult;
 import com.sss.douyin.service.UserService;
+import com.sss.douyin.util.TokenHolder;
 import com.sss.douyin.util.TokenUtil;
 import com.sss.douyin.util.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ import java.util.HashMap;
 public class UserController {
     @Autowired
     public UserService userService;
+
+    @Autowired
+    public TokenHolder tokenHolder;
 
     /**
      * 用户信息
@@ -41,7 +45,8 @@ public class UserController {
     @RequestMapping("/user/login")
     public String userRegister(String username, String password){
         RegisterResult ret;
-        Integer id = userService.login(username, password);
+        UserDTO userDTO = userService.login(username, password);
+        Integer id = userDTO.getId();
         if(id == null){
             ret = RegisterResult.error("登陆失败");
             return JSONUtil.toJsonStr(ret);
@@ -49,7 +54,8 @@ public class UserController {
         String token = TokenUtil.getToken(username, password);
         ret = RegisterResult.success(id, token);
 
-        UserHolder.setUser(id);
+        //存token
+        tokenHolder.setUser(JSONUtil.toJsonStr(userDTO), token);
 
         return JSONUtil.toJsonStr(ret);
     }
@@ -76,6 +82,11 @@ public class UserController {
         id = userService.addUser(username, password);
         String token = TokenUtil.getToken(username, password);
         ret = RegisterResult.success(id, token);
+
+        //存token
+        UserDTO userDTO = userService.login(username, password);
+        tokenHolder.setUser(JSONUtil.toJsonStr(userDTO), token);
+
         return JSONUtil.toJsonStr(ret);
     }
 
