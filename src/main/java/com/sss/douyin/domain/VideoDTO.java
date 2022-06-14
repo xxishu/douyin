@@ -2,18 +2,16 @@ package com.sss.douyin.domain;
 
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
-public class Video {
+public class VideoDTO {
     Integer id;
-    Integer authorid;
+    UserDTO author;
     String title;
     String play_url;
     String cover_url;
-    Long updatetime;
-    List<User> favorite;
-    List<String> comment;
-
+    Integer favorite_count;
+    Integer comment_count;
+    Boolean is_favorite;
 }

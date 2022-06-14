@@ -1,19 +1,41 @@
 package com.sss.douyin.controller;
 
+import com.sss.douyin.domain.VideoDTO;
+import com.sss.douyin.mapper.VideoMapper;
+import com.sss.douyin.service.VideoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/douyin")
 public class VideoController {
+
+    @Autowired
+    VideoService videoService;
+
     /**
      * 视频流接口
      * @return
      */
     @RequestMapping("/feed")
-    public String feed(){
+    public String feed(@RequestParam("latest_time") long latestTimeLong){
+        Date latestTime;
+        if(latestTimeLong != 0){
+            latestTime = new Date(latestTimeLong);
+        } else {
+            latestTime = new Date();
+        }
+        List<VideoDTO> videos = videoService.findVideoByTime(latestTimeLong);
+
+
         return null;
     }
+
     /**
      * 视频投稿
      * @return
